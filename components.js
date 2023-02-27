@@ -1,4 +1,4 @@
-//components
+//components declaration
 var mainCharacter;
 var borderTop;
 var borderBottom;
@@ -6,16 +6,15 @@ var borderLeft;
 var myScore;
 var topScore;
 var borderRight;
-let bullet_array = [];
-let interval = 70;
-let time_before_next_shot = 0;
-let health = 3;
-let chosen_border = "";
-let mainCharx = 340;
-let mainChary = 195;
-
-//array of border components
-let border_arr = ["top", "bottom", "left", "right"];
+let bullet_array = []; //array to store all the bullets
+let interval = 70; //initial number of miliseconds to wait for next shot, gets incrementaly smaller
+let time_before_next_shot = 0; //counts until interval, hits a shot, goes back to zero
+//health variable
+let health = 3; //health
+let chosen_border = ""; //variable denoting the next border to shoot from
+let mainCharx = 340; //mainCharx, global for bullet positioning
+let mainChary = 195; //mainChary, global for bullet positioning
+let border_arr = ["top", "bottom", "left", "right"]; //array of border components
 
 //function causes one of the borders to shoot a bullet from a random spot on the side facing inwards and at a random degree. They start of slowly shooting, but the interval shrinks to a certain number, until it shoots 4-5 per minuite.
 function choose_shooting_border() {
@@ -202,4 +201,8 @@ function makeid(length) {
 /**
  * @todo remove all depreciated libraries like e.keyCode and use requestAnimaitonFrame()
  * @todo ask gpt how to improve code
+ * @todo make maincharacter rotate based on the direction he is facing.
+ * @todo change maincharacter's width and height and replace with an image of a spaceship.
+ * @todo add textures to the bullet, the background, and the borders.
+ * @todo add start screen
  */
