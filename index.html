@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FireRun Game</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="main.js"></script>
+    <script defer src="components.js"></script>
+    <meta
+      name="viewport"
+      content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height"
+    />
+  </head>
+  <body onload="startGame()">
+    <div
+      style="
+        border: 2px black solid;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      "
+      id="play_screen"
+      class="play_screen"
+    >
+      <button onclick="endPause()">Play</button>
+    </div>
+  </body>
+</html>
