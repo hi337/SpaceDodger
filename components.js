@@ -135,17 +135,20 @@ function text_comp(size, font, color, x, y) {
 }
 
 //default component for main characters and borders
-function component(width, height, color, x, y) {
+function component(width, height, src, x, y) {
   this.width = width;
   this.height = height;
   this.speedX = 0;
   this.speedY = 0;
   this.x = x;
   this.y = y;
+  this.image = new Image();
+  this.image.src = src;
   this.update = function () {
     ctx = myGameArea.context;
-    ctx.fillStyle = color;
-    ctx.fillRect(this.x, this.y, this.width, this.height);
+    // ctx.fillStyle = color;
+    // ctx.fillRect(this.x, this.y, this.width, this.height);
+    ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
   };
   //changes the position of the component
   this.newPos = function () {
@@ -175,28 +178,6 @@ function component(width, height, color, x, y) {
     }
     return crash;
   };
-}
-
-//movements for the mainCharacter
-function moveup() {
-  mainCharacter.speedY -= 1;
-}
-
-function movedown() {
-  mainCharacter.speedY += 1;
-}
-
-function moveleft() {
-  mainCharacter.speedX -= 1;
-}
-
-function moveright() {
-  mainCharacter.speedX += 1;
-}
-
-function stopMove() {
-  mainCharacter.speedX = 0;
-  mainCharacter.speedY = 0;
 }
 
 function getRandomInt(min, max) {

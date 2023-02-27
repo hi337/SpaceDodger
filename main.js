@@ -17,7 +17,13 @@ function endPause() {
 function startGame() {
   // document.getElementById("start_screen").style.display = "none";
   myGameArea.start();
-  mainCharacter = new component(30, 30, "green", mainCharx, mainChary);
+  mainCharacter = new component(
+    30,
+    30,
+    "./img/smiley.gif",
+    mainCharx,
+    mainChary
+  );
   borderTop = new border_comp(700, 10, "red", 0, 0, "top");
   borderBottom = new border_comp(700, 10, "red", 0, 390, "bottom");
   borderLeft = new border_comp(10, 393, "red", 0, 10, "left");
