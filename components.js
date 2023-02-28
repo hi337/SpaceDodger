@@ -35,6 +35,8 @@ function bullet_comp(x, y, name, angle, speedX, speedY) {
   this.width = 10;
   this.height = 10;
   this.color = "red";
+  this.image = new Image();
+  this.image.src = "./img/fireball.png";
   this.update = function () {
     ctx = myGameArea.context;
     ctx.save();
