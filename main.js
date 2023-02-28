@@ -18,9 +18,9 @@ function startGame() {
   // document.getElementById("start_screen").style.display = "none";
   myGameArea.start();
   mainCharacter = new component(
-    30,
-    30,
-    "./img/smiley.gif",
+    70,
+    70,
+    "./img/ship-N.png",
     mainCharx,
     mainChary
   );

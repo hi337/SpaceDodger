@@ -12,8 +12,8 @@ let time_before_next_shot = 0; //counts until interval, hits a shot, goes back t
 //health variable
 let health = 3; //health
 let chosen_border = ""; //variable denoting the next border to shoot from
-let mainCharx = 340; //mainCharx, global for bullet positioning
-let mainChary = 195; //mainChary, global for bullet positioning
+let mainCharx = 315; //mainCharx, global for bullet positioning
+let mainChary = 200; //mainChary, global for bullet positioning
 let border_arr = ["top", "bottom", "left", "right"]; //array of border components
 
 //function causes one of the borders to shoot a bullet from a random spot on the side facing inwards and at a random degree. They start of slowly shooting, but the interval shrinks to a certain number, until it shoots 4-5 per minuite.
@@ -145,8 +145,29 @@ function component(width, height, src, x, y) {
   this.image.src = src;
   this.update = function () {
     ctx = myGameArea.context;
-    // ctx.fillStyle = color;
-    // ctx.fillRect(this.x, this.y, this.width, this.height);
+    if (this.speedX > 0) {
+      if (this.speedY == 0) {
+        this.image.src = "./img/ship-E.png";
+      } else if (this.speedY < 0) {
+        this.image.src = "./img/ship-NE.png";
+      } else if (this.speedY > 0) {
+        this.image.src = "./img/ship-SE.png";
+      }
+    } else if (this.speedX < 0) {
+      if (this.speedY == 0) {
+        this.image.src = "./img/ship-W.png";
+      } else if (this.speedY < 0) {
+        this.image.src = "./img/ship-NW.png";
+      } else if (this.speedY > 0) {
+        this.image.src = "./img/ship-SW.png";
+      }
+    } else if (this.speedX == 0) {
+      if (this.speedY < 0) {
+        this.image.src = "./img/ship-N.png";
+      } else if (this.speedY > 0) {
+        this.image.src = "./img/ship-S.png";
+      }
+    }
     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
   };
   //changes the position of the component
