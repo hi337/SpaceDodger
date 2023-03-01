@@ -34,7 +34,6 @@ function bullet_comp(x, y, name, angle, speedX, speedY) {
   this.y = y;
   this.width = 10;
   this.height = 10;
-  this.color = "red";
   this.image = new Image();
   this.image.src = "./img/fireball.png";
   this.update = function () {
@@ -42,8 +41,13 @@ function bullet_comp(x, y, name, angle, speedX, speedY) {
     ctx.save();
     ctx.translate(this.x, this.y);
     ctx.rotate(this.angle);
-    ctx.fillStyle = "red";
-    ctx.fillRect(this.width / -2, this.height / -2, this.width, this.height);
+    ctx.drawImage(
+      this.image,
+      this.width / -2,
+      this.height / -2,
+      this.width,
+      this.height
+    );
     ctx.restore();
   };
   //changes the position of the component
@@ -75,16 +79,23 @@ function bullet_comp(x, y, name, angle, speedX, speedY) {
 }
 
 //border component, which will be shooting out the flames
-function border_comp(width, height, color, x, y, name) {
+function border_comp(width, height, x, y, name) {
   this.name = name;
   this.width = width;
   this.height = height;
   this.x = x;
   this.y = y;
+  this.image = new Image();
+  if (name == "bottom" || name == "top") {
+    this.image.src = "./img/border_bottom.png";
+  } else if (name == "left") {
+    this.image.src = "./img/border_left.png";
+  } else {
+    this.image.src = "./img/border_right.png";
+  }
   this.update = function () {
     ctx = myGameArea.context;
-    ctx.fillStyle = color;
-    ctx.fillRect(this.x, this.y, this.width, this.height);
+    ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
   };
   this.shoot = function () {
     let nom = makeid(5);

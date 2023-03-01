@@ -15,23 +15,22 @@ function endPause() {
 
 //initialization of the game area and components
 function startGame() {
-  // document.getElementById("start_screen").style.display = "none";
   myGameArea.start();
   mainCharacter = new component(
-    70,
-    70,
+    60,
+    60,
     "./img/ship-N.png",
     mainCharx,
     mainChary
   );
-  borderTop = new border_comp(700, 10, "red", 0, 0, "top");
-  borderBottom = new border_comp(700, 10, "red", 0, 390, "bottom");
-  borderLeft = new border_comp(10, 393, "red", 0, 10, "left");
-  borderRight = new border_comp(10, 393, "red", 690, 10, "right");
-  myScore = new text_comp("12px", "Consolas", "black", 200, 40);
-  topScore = new text_comp("12px", "Consolas", "black", 310, 40);
-  Health = new text_comp("12px", "Consolas", "black", 445, 40);
-  pausedText = new text_comp("30px", "Consolas", "black", 310, 200);
+  borderTop = new border_comp(700, 10, 0, 0, "top");
+  borderBottom = new border_comp(700, 10, 0, 390, "bottom");
+  borderLeft = new border_comp(10, 393, 0, 10, "left");
+  borderRight = new border_comp(10, 393, 690, 10, "right");
+  myScore = new text_comp("12px", "Consolas", "white", 200, 40);
+  topScore = new text_comp("12px", "Consolas", "white", 310, 40);
+  Health = new text_comp("12px", "Consolas", "white", 445, 40);
+  pausedText = new text_comp("30px", "Consolas", "white", 310, 200);
 }
 
 //Where the canvas element is initialized and controlled
@@ -79,19 +78,19 @@ var myGameArea = {
 
 //what happens everytime the frame updates
 function updateGameArea() {
-  //detecting r for reset and p for pause
+  //detecting r for reset
   if (myGameArea.keys && myGameArea.keys[82]) {
     location.reload();
   }
   if (!paused) {
     if (mainCharacter.crashWith(borderTop)) {
-      mainCharacter.y = 355;
+      mainCharacter.y = 330;
     } else if (mainCharacter.crashWith(borderBottom)) {
       mainCharacter.y = 13;
     } else if (mainCharacter.crashWith(borderRight)) {
-      mainCharacter.x = 13;
+      mainCharacter.x = 16;
     } else if (mainCharacter.crashWith(borderLeft)) {
-      mainCharacter.x = 655;
+      mainCharacter.x = 630;
     }
     myGameArea.clear();
     borderTop.update();
