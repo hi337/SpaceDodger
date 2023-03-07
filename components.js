@@ -6,7 +6,8 @@ var borderLeft;
 var myScore;
 var topScore;
 var borderRight;
-let bullet_array = []; //array to store all the bullets
+let border_bullet_arr = []; //array to store all the bullets shot from
+let mainChar_bullet_arr = [];
 let interval = 70; //initial number of miliseconds to wait for next shot, gets incrementaly smaller
 let time_before_next_shot = 0; //counts until interval, hits a shot, goes back to zero
 //health variable
@@ -106,7 +107,9 @@ function border_comp(width, height, x, y, name) {
       );
       let slope = (mainChary - 20) / (mainCharx - random_int);
       if (mainCharx < random_int) slope = -slope;
-      bullet_array.push(new bullet_comp(random_int, 20, nom, ang, slope, 1));
+      border_bullet_arr.push(
+        new bullet_comp(random_int, 20, nom, ang, slope, 1)
+      );
     } else if (this.name == "bottom") {
       let random_int = getRandomInt(20, 680);
       let ang = Math.atan(
@@ -114,7 +117,9 @@ function border_comp(width, height, x, y, name) {
       );
       let slope = Math.abs(mainChary - 360) / Math.abs(mainCharx - random_int);
       if (mainCharx < random_int) slope = -slope;
-      bullet_array.push(new bullet_comp(random_int, 360, nom, ang, slope, -1));
+      border_bullet_arr.push(
+        new bullet_comp(random_int, 360, nom, ang, slope, -1)
+      );
     } else if (this.name == "left") {
       let random_int = getRandomInt(20, 370);
       let ang = Math.atan(
@@ -122,7 +127,9 @@ function border_comp(width, height, x, y, name) {
       );
       let slope = Math.abs(mainChary - random_int) / Math.abs(mainCharx - 20);
       if (mainChary < random_int) slope = -slope;
-      bullet_array.push(new bullet_comp(20, random_int, nom, ang, 1, slope));
+      border_bullet_arr.push(
+        new bullet_comp(20, random_int, nom, ang, 1, slope)
+      );
     } else if (this.name == "right") {
       let random_int = getRandomInt(20, 370);
       let ang = Math.atan(
@@ -130,7 +137,9 @@ function border_comp(width, height, x, y, name) {
       );
       let slope = Math.abs(mainChary - random_int) / Math.abs(mainCharx - 660);
       if (mainChary < random_int) slope = -slope;
-      bullet_array.push(new bullet_comp(660, random_int, nom, ang, -1, slope));
+      border_bullet_arr.push(
+        new bullet_comp(660, random_int, nom, ang, -1, slope)
+      );
     }
   };
 }
@@ -156,30 +165,50 @@ function component(width, height, src, x, y) {
   this.y = y;
   this.image = new Image();
   this.image.src = src;
-  this.update = function () {
-    ctx = myGameArea.context;
+  this.direction_facing = function () {
     if (this.speedX > 0) {
       if (this.speedY == 0) {
-        this.image.src = "./img/ship-E.png";
+        return "E";
       } else if (this.speedY < 0) {
-        this.image.src = "./img/ship-NE.png";
+        return "NE";
       } else if (this.speedY > 0) {
-        this.image.src = "./img/ship-SE.png";
+        return "SE";
       }
     } else if (this.speedX < 0) {
       if (this.speedY == 0) {
-        this.image.src = "./img/ship-W.png";
+        return "W";
       } else if (this.speedY < 0) {
-        this.image.src = "./img/ship-NW.png";
+        return "NW";
       } else if (this.speedY > 0) {
-        this.image.src = "./img/ship-SW.png";
+        return "SW";
       }
     } else if (this.speedX == 0) {
       if (this.speedY < 0) {
-        this.image.src = "./img/ship-N.png";
+        return "N";
       } else if (this.speedY > 0) {
-        this.image.src = "./img/ship-S.png";
+        return "S";
       }
+    }
+  };
+  this.update = function () {
+    let ctx = myGameArea.context;
+    let direction = this.direction_facing();
+    if (direction == "E") {
+      this.image.src = "./img/ship-E.png";
+    } else if (direction == "NE") {
+      this.image.src = "./img/ship-NE.png";
+    } else if (direction == "SE") {
+      this.image.src = "./img/ship-SE.png";
+    } else if (direction == "W") {
+      this.image.src = "./img/ship-W.png";
+    } else if (direction == "NW") {
+      this.image.src = "./img/ship-NW.png";
+    } else if (direction == "SW") {
+      this.image.src = "./img/ship-SW.png";
+    } else if (direction == "N") {
+      this.image.src = "./img/ship-N.png";
+    } else if (direction == "S") {
+      this.image.src = "./img/ship-S.png";
     }
     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
   };
@@ -233,7 +262,8 @@ function makeid(length) {
 }
 
 /**
- * @todo remove all depreciated libraries like e.keyCode and use requestAnimaitonFrame()
+ * @todo remove all depreciated libraries like requestAnimaitonFrame()
+ * @todo make the shaking effect on nuke and not on hit
  * @todo ask gpt how to improve code
  * @todo make maincharacter rotate based on the direction he is facing.
  * @todo change maincharacter's width and height and replace with an image of a spaceship.
