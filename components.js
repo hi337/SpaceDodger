@@ -6,8 +6,8 @@ var borderLeft;
 var myScore;
 var topScore;
 var borderRight;
-let border_bullet_arr = []; //array to store all the bullets shot from
-let mainChar_bullet_arr = [];
+let border_bullet_arr = []; //array to store all the bullets shot from border
+let mainChar_bullet_arr = []; //array to store all the bullets shot from mainChar
 let interval = 70; //initial number of miliseconds to wait for next shot, gets incrementaly smaller
 let time_before_next_shot = 0; //counts until interval, hits a shot, goes back to zero
 //health variable
@@ -98,6 +98,7 @@ function border_comp(width, height, x, y, name) {
     ctx = myGameArea.context;
     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
   };
+  //shooting bullets from the border
   this.shoot = function () {
     let nom = makeid(5);
     if (this.name == "top") {
@@ -156,60 +157,50 @@ function text_comp(size, font, color, x, y) {
 }
 
 //default component for main characters and borders
-function component(width, height, src, x, y) {
+function component(width, height, x, y) {
   this.width = width;
   this.height = height;
   this.speedX = 0;
   this.speedY = 0;
   this.x = x;
   this.y = y;
-  this.image = new Image();
-  this.image.src = src;
-  this.direction_facing = function () {
+  this.image = north;
+  this.facing = "N";
+  this.update_direction_facing = function () {
     if (this.speedX > 0) {
       if (this.speedY == 0) {
-        return "E";
+        this.image = east;
+        this.facing = "E";
       } else if (this.speedY < 0) {
-        return "NE";
+        this.image = northeast;
+        this.facing = "NE";
       } else if (this.speedY > 0) {
-        return "SE";
+        this.image = southeast;
+        this.facing = "SE";
       }
     } else if (this.speedX < 0) {
       if (this.speedY == 0) {
-        return "W";
+        this.image = west;
+        this.facing = "W";
       } else if (this.speedY < 0) {
-        return "NW";
+        this.image = northwest;
+        this.facing = "NW";
       } else if (this.speedY > 0) {
-        return "SW";
+        this.image = southwest;
+        this.facing = "SW";
       }
     } else if (this.speedX == 0) {
       if (this.speedY < 0) {
-        return "N";
+        this.image = north;
+        this.facing = "N";
       } else if (this.speedY > 0) {
-        return "S";
+        this.image = south;
+        this.facing = "S";
       }
     }
   };
   this.update = function () {
     let ctx = myGameArea.context;
-    let direction = this.direction_facing();
-    if (direction == "E") {
-      this.image.src = "./img/ship-E.png";
-    } else if (direction == "NE") {
-      this.image.src = "./img/ship-NE.png";
-    } else if (direction == "SE") {
-      this.image.src = "./img/ship-SE.png";
-    } else if (direction == "W") {
-      this.image.src = "./img/ship-W.png";
-    } else if (direction == "NW") {
-      this.image.src = "./img/ship-NW.png";
-    } else if (direction == "SW") {
-      this.image.src = "./img/ship-SW.png";
-    } else if (direction == "N") {
-      this.image.src = "./img/ship-N.png";
-    } else if (direction == "S") {
-      this.image.src = "./img/ship-S.png";
-    }
     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
   };
   //changes the position of the component
@@ -218,6 +209,41 @@ function component(width, height, src, x, y) {
     this.y += this.speedY;
     mainCharx = this.x;
     mainChary = this.y;
+  };
+  //shooting mechanism
+  this.shoot = function () {
+    let nom = makeid(5);
+    if (this.facing == "N") {
+      mainChar_bullet_arr.push(new bullet_comp(this.x, this.y, nom, 0, 1, 1));
+    } else if (this.facing == "NE") {
+      mainChar_bullet_arr.push(
+        new bullet_comp(this.x, this.y, nom, 0.785398, 1, 1)
+      );
+    } else if (this.facing == "E") {
+      mainChar_bullet_arr.push(
+        new bullet_comp(this.x, this.y, nom, 1.5708, 1, 1)
+      );
+    } else if (this.facing == "SE") {
+      mainChar_bullet_arr.push(
+        new bullet_comp(this.x, this.y, nom, 2.35619, 1, 1)
+      );
+    } else if (this.facing == "S") {
+      mainChar_bullet_arr.push(
+        new bullet_comp(this.x, this.y, nom, 3.14159, 1, 1)
+      );
+    } else if (this.facing == "SW") {
+      mainChar_bullet_arr.push(
+        new bullet_comp(this.x, this.y, nom, 3.92699, 1, 1)
+      );
+    } else if (this.facing == "W") {
+      mainChar_bullet_arr.push(
+        new bullet_comp(this.x, this.y, nom, 4.71239, 1, 1)
+      );
+    } else if (this.facing == "NW") {
+      mainChar_bullet_arr.push(
+        new bullet_comp(this.x, this.y, nom, 5.49779, 1, 1)
+      );
+    }
   };
   //collision detection
   this.crashWith = function (otherobj) {

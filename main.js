@@ -7,6 +7,26 @@ let paused = false;
 let allow_pause = true;
 let shake_frame_count = 0;
 let shot = false;
+let shot_hold = false;
+
+//preloading images
+let east = new Image();
+let north = new Image();
+let northeast = new Image();
+let northwest = new Image();
+let south = new Image();
+let southeast = new Image();
+let southwest = new Image();
+let west = new Image();
+
+east.src = "./img/ship-E.png";
+north.src = "./img/ship-N.png";
+northeast.src = "./img/ship-NE.png";
+northwest.src = "./img/ship-NW.png";
+south.src = "./img/ship-S.png";
+southeast.src = "./img/ship-SE.png";
+southwest.src = "./img/ship-SW.png";
+west.src = "./img/ship-W.png";
 
 function endPause() {
   pause = true;
@@ -18,13 +38,7 @@ function endPause() {
 //initialization of the game area and components
 function startGame() {
   myGameArea.start();
-  mainCharacter = new component(
-    60,
-    60,
-    "./img/ship-N.png",
-    mainCharx,
-    mainChary
-  );
+  mainCharacter = new component(60, 60, mainCharx, mainChary);
   borderTop = new border_comp(700, 10, 0, 0, "top");
   borderBottom = new border_comp(700, 10, 0, 390, "bottom");
   borderLeft = new border_comp(10, 393, 0, 10, "left");
@@ -68,6 +82,7 @@ var myGameArea = {
         r: false,
         p: false,
         Shift: false,
+        " ": false,
       };
       myGameArea.keys[e.key] = true;
     });
@@ -161,6 +176,24 @@ function updateGameArea() {
       border_bullet_arr[y].update();
     }
 
+    for (var z = 0; z < mainChar_bullet_arr.length; z++) {
+      if (
+        mainChar_bullet_arr[z].crashWith(borderBottom) ||
+        mainChar_bullet_arr[z].crashWith(borderTop) ||
+        mainChar_bullet_arr[z].crashWith(borderLeft) ||
+        mainChar_bullet_arr[z].crashWith(borderRight)
+      ) {
+        delete mainChar_bullet_arr[z];
+      }
+
+      mainChar_bullet_arr = mainChar_bullet_arr.filter(
+        (item) => item !== undefined
+      );
+
+      mainChar_bullet_arr[z].newPos();
+      mainChar_bullet_arr[z].update();
+    }
+
     //processing how long to shake the screen
     if (shot) {
       shake_frame_count += 1;
@@ -239,8 +272,20 @@ function updateGameArea() {
     ) {
       mainCharacter.speedY = 2 + acceleration;
     }
-    mainCharacter.newPos();
-    mainCharacter.update();
+
+    //initiate a shot from mainChar
+    if (myGameArea.keys && myGameArea.keys[" "]) {
+      if (!shot_hold) {
+        mainCharacter.shoot();
+        shot_hold = true;
+      }
+    } else {
+      shot_hold = false;
+    }
+
+    mainCharacter.newPos(); //adjust x and y based on inputs
+    mainCharacter.update_direction_facing(); //update the direction mainChar faces
+    mainCharacter.update(); //draw new mainChar spot
   } else {
     myGameArea.clear();
     pausedText.text = "PAUSED";
