@@ -153,28 +153,28 @@ function updateGameArea() {
       }
     }
 
-    for (var y = 0; y < border_bullet_arr.length; y++) {
-      if (
-        border_bullet_arr[y].crashWith(borderBottom) ||
-        border_bullet_arr[y].crashWith(borderLeft) ||
-        border_bullet_arr[y].crashWith(borderTop) ||
-        border_bullet_arr[y].crashWith(borderRight)
-      ) {
-        delete border_bullet_arr[y];
-      } else if (border_bullet_arr[y].crashWith(mainCharacter)) {
-        delete border_bullet_arr[y];
-        health -= 1;
-        shot = true;
-        myGameArea.canvas.classList.add("shake_screen");
-      }
+    // for (var y = 0; y < border_bullet_arr.length; y++) {
+    //   if (
+    //     border_bullet_arr[y].crashWith(borderBottom) ||
+    //     border_bullet_arr[y].crashWith(borderLeft) ||
+    //     border_bullet_arr[y].crashWith(borderTop) ||
+    //     border_bullet_arr[y].crashWith(borderRight)
+    //   ) {
+    //     delete border_bullet_arr[y];
+    //   } else if (border_bullet_arr[y].crashWith(mainCharacter)) {
+    //     delete border_bullet_arr[y];
+    //     health -= 1;
+    //     shot = true;
+    //     myGameArea.canvas.classList.add("shake_screen");
+    //   }
 
-      border_bullet_arr = border_bullet_arr.filter(
-        (item) => item !== undefined
-      );
+    //   border_bullet_arr = border_bullet_arr.filter(
+    //     (item) => item !== undefined
+    //   );
 
-      border_bullet_arr[y].newPos();
-      border_bullet_arr[y].update();
-    }
+    //   border_bullet_arr[y].newPos();
+    //   border_bullet_arr[y].update();
+    // }
 
     for (var z = 0; z < mainChar_bullet_arr.length; z++) {
       if (

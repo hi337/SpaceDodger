@@ -214,34 +214,36 @@ function component(width, height, x, y) {
   this.shoot = function () {
     let nom = makeid(5);
     if (this.facing == "N") {
-      mainChar_bullet_arr.push(new bullet_comp(this.x, this.y, nom, 0, 1, 1));
+      mainChar_bullet_arr.push(
+        new bullet_comp(this.x + 30, this.y, nom, 0, 0, -5.5)
+      );
     } else if (this.facing == "NE") {
       mainChar_bullet_arr.push(
-        new bullet_comp(this.x, this.y, nom, 0.785398, 1, 1)
+        new bullet_comp(this.x + 60, this.y, nom, 0.785398, 5.5, -5.5)
       );
     } else if (this.facing == "E") {
       mainChar_bullet_arr.push(
-        new bullet_comp(this.x, this.y, nom, 1.5708, 1, 1)
+        new bullet_comp(this.x, this.y, nom, 1.5708, 5.5, 5.5)
       );
     } else if (this.facing == "SE") {
       mainChar_bullet_arr.push(
-        new bullet_comp(this.x, this.y, nom, 2.35619, 1, 1)
+        new bullet_comp(this.x, this.y, nom, 2.35619, 5.5, 5.5)
       );
     } else if (this.facing == "S") {
       mainChar_bullet_arr.push(
-        new bullet_comp(this.x, this.y, nom, 3.14159, 1, 1)
+        new bullet_comp(this.x, this.y, nom, 3.14159, 0, 5.5)
       );
     } else if (this.facing == "SW") {
       mainChar_bullet_arr.push(
-        new bullet_comp(this.x, this.y, nom, 3.92699, 1, 1)
+        new bullet_comp(this.x, this.y, nom, 3.92699, -5.5, 5.5)
       );
     } else if (this.facing == "W") {
       mainChar_bullet_arr.push(
-        new bullet_comp(this.x, this.y, nom, 4.71239, 1, 1)
+        new bullet_comp(this.x, this.y, nom, 4.71239, -5.5, 0)
       );
     } else if (this.facing == "NW") {
       mainChar_bullet_arr.push(
-        new bullet_comp(this.x, this.y, nom, 5.49779, 1, 1)
+        new bullet_comp(this.x, this.y, nom, 5.49779, -5.5, -5.5)
       );
     }
   };
@@ -295,4 +297,5 @@ function makeid(length) {
  * @todo change maincharacter's width and height and replace with an image of a spaceship.
  * @todo add textures to the bullet, the background, and the borders.
  * @todo add start screen
+ * @todo fix the shooting mechanism, detect hits with the border_bullets, get new texture.
  */
