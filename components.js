@@ -25,7 +25,61 @@ function choose_shooting_border() {
   chosen_border = border_arr[Math.floor(Math.random() * border_arr.length)];
 }
 
-//bullet component. will have a hit
+//mainChar bullet component
+function mainChar_bullet_comp(x, y, name, angle, speedX, speedY) {
+  this.speedX = speedX;
+  this.speedY = speedY;
+  this.angle = angle;
+  this.name = name;
+  this.x = x;
+  this.y = y;
+  this.width = 10;
+  this.height = 10;
+  this.image = new Image();
+  this.image.src = "./img/fireball.png";
+  this.update = function () {
+    ctx = myGameArea.context;
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.angle);
+    ctx.drawImage(
+      this.image,
+      this.width / -2,
+      this.height / -2,
+      this.width,
+      this.height
+    );
+    ctx.restore();
+  };
+  //changes the position of the component
+  this.newPos = function () {
+    this.x += this.speedX;
+    this.y += this.speedY;
+  };
+  //collision detection
+  this.crashWith = function (otherobj) {
+    var myleft = this.x;
+    var myright = this.x + this.width;
+    var mytop = this.y;
+    var mybottom = this.y + this.height;
+    var otherleft = otherobj.x;
+    var otherright = otherobj.x + otherobj.width;
+    var othertop = otherobj.y;
+    var otherbottom = otherobj.y + otherobj.height;
+    var crash = true;
+    if (
+      mybottom < othertop ||
+      mytop > otherbottom ||
+      myright < otherleft ||
+      myleft > otherright
+    ) {
+      crash = false;
+    }
+    return crash;
+  };
+}
+
+//border shooting bullet component
 function bullet_comp(x, y, name, angle, speedX, speedY) {
   this.speedX = speedX;
   this.speedY = speedY;
@@ -215,35 +269,63 @@ function component(width, height, x, y) {
     let nom = makeid(5);
     if (this.facing == "N") {
       mainChar_bullet_arr.push(
-        new bullet_comp(this.x + 30, this.y, nom, 0, 0, -5.5)
+        new mainChar_bullet_comp(this.x + 30, this.y + 10, nom, 0, 0, -5.5)
       );
     } else if (this.facing == "NE") {
       mainChar_bullet_arr.push(
-        new bullet_comp(this.x + 60, this.y, nom, 0.785398, 5.5, -5.5)
+        new mainChar_bullet_comp(
+          this.x + 47,
+          this.y + 10,
+          nom,
+          0.785398,
+          5.5,
+          -5.5
+        )
       );
     } else if (this.facing == "E") {
       mainChar_bullet_arr.push(
-        new bullet_comp(this.x, this.y, nom, 1.5708, 5.5, 5.5)
+        new mainChar_bullet_comp(this.x + 30, this.y + 30, nom, 1.5708, 5.5, 0)
       );
     } else if (this.facing == "SE") {
       mainChar_bullet_arr.push(
-        new bullet_comp(this.x, this.y, nom, 2.35619, 5.5, 5.5)
+        new mainChar_bullet_comp(
+          this.x + 35,
+          this.y + 35,
+          nom,
+          2.35619,
+          5.5,
+          5.5
+        )
       );
     } else if (this.facing == "S") {
       mainChar_bullet_arr.push(
-        new bullet_comp(this.x, this.y, nom, 3.14159, 0, 5.5)
+        new mainChar_bullet_comp(this.x + 30, this.y + 40, nom, 3.14159, 0, 5.5)
       );
     } else if (this.facing == "SW") {
       mainChar_bullet_arr.push(
-        new bullet_comp(this.x, this.y, nom, 3.92699, -5.5, 5.5)
+        new mainChar_bullet_comp(
+          this.x + 20,
+          this.y + 40,
+          nom,
+          3.92699,
+          -5.5,
+          5.5
+        )
       );
     } else if (this.facing == "W") {
       mainChar_bullet_arr.push(
-        new bullet_comp(this.x, this.y, nom, 4.71239, -5.5, 0)
+        new mainChar_bullet_comp(
+          this.x + 15,
+          this.y + 30,
+          nom,
+          4.71239,
+          -5.5,
+          0
+        )
       );
     } else if (this.facing == "NW") {
       mainChar_bullet_arr.push(
-        new bullet_comp(this.x, this.y, nom, 5.49779, -5.5, -5.5)
+        new mainChar_bullet_comp(this.x, this.y, nom, 5.49779, -5.5, -5.5)
       );
     }
   };
@@ -287,6 +369,13 @@ function makeid(length) {
     counter += 1;
   }
   return result;
+}
+
+function bullet_collision(object1, object2) {
+  if (object1.crashWith(object2)) {
+    return true;
+  }
+  return false;
 }
 
 /**

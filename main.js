@@ -75,10 +75,6 @@ var myGameArea = {
         a: false,
         s: false,
         d: false,
-        ArrowUp: false,
-        ArrowDown: false,
-        ArrowLeft: false,
-        ArrowRight: false,
         r: false,
         p: false,
         Shift: false,
@@ -89,8 +85,9 @@ var myGameArea = {
     window.addEventListener("keyup", function (e) {
       if (e.key == "p") {
         allow_pause = true;
+      } else {
+        myGameArea.keys[e.key] = false;
       }
-      myGameArea.keys[e.key] = false;
     });
   },
   clear: function () {
@@ -153,29 +150,41 @@ function updateGameArea() {
       }
     }
 
-    // for (var y = 0; y < border_bullet_arr.length; y++) {
-    //   if (
-    //     border_bullet_arr[y].crashWith(borderBottom) ||
-    //     border_bullet_arr[y].crashWith(borderLeft) ||
-    //     border_bullet_arr[y].crashWith(borderTop) ||
-    //     border_bullet_arr[y].crashWith(borderRight)
-    //   ) {
-    //     delete border_bullet_arr[y];
-    //   } else if (border_bullet_arr[y].crashWith(mainCharacter)) {
-    //     delete border_bullet_arr[y];
-    //     health -= 1;
-    //     shot = true;
-    //     myGameArea.canvas.classList.add("shake_screen");
-    //   }
+    //detect when bullets crash with each other
+    for (let z = 0; z < mainChar_bullet_arr.length; z++) {
+      for (let x = 0; x < border_bullet_arr.length; x++) {
+        if (bullet_collision(mainChar_bullet_arr[z], border_bullet_arr[x])) {
+          delete mainChar_bullet_arr[z];
+          delete border_bullet_arr[x];
+        }
+      }
+    }
 
-    //   border_bullet_arr = border_bullet_arr.filter(
-    //     (item) => item !== undefined
-    //   );
+    //detect if a border bullet hits a border or mainChar
+    for (var y = 0; y < border_bullet_arr.length; y++) {
+      if (
+        border_bullet_arr[y].crashWith(borderBottom) ||
+        border_bullet_arr[y].crashWith(borderLeft) ||
+        border_bullet_arr[y].crashWith(borderTop) ||
+        border_bullet_arr[y].crashWith(borderRight)
+      ) {
+        delete border_bullet_arr[y];
+      } else if (border_bullet_arr[y].crashWith(mainCharacter)) {
+        delete border_bullet_arr[y];
+        health -= 1;
+        shot = true;
+        myGameArea.canvas.classList.add("shake_screen");
+      }
 
-    //   border_bullet_arr[y].newPos();
-    //   border_bullet_arr[y].update();
-    // }
+      border_bullet_arr = border_bullet_arr.filter(
+        (item) => item !== undefined
+      );
 
+      border_bullet_arr[y].newPos();
+      border_bullet_arr[y].update();
+    }
+
+    //detect mainChar bullet hitting border
     for (var z = 0; z < mainChar_bullet_arr.length; z++) {
       if (
         mainChar_bullet_arr[z].crashWith(borderBottom) ||
@@ -248,28 +257,16 @@ function updateGameArea() {
     mainCharacter.speedX = 0;
     mainCharacter.speedY = 0;
 
-    if (
-      myGameArea.keys &&
-      (myGameArea.keys["a"] || myGameArea.keys["ArrowLeft"])
-    ) {
+    if (myGameArea.keys && myGameArea.keys["a"]) {
       mainCharacter.speedX = -2 - acceleration;
     }
-    if (
-      myGameArea.keys &&
-      (myGameArea.keys["d"] || myGameArea.keys["ArrowRight"])
-    ) {
+    if (myGameArea.keys && myGameArea.keys["d"]) {
       mainCharacter.speedX = 2 + acceleration;
     }
-    if (
-      myGameArea.keys &&
-      (myGameArea.keys["w"] || myGameArea.keys["ArrowUp"])
-    ) {
+    if (myGameArea.keys && myGameArea.keys["w"]) {
       mainCharacter.speedY = -2 - acceleration;
     }
-    if (
-      myGameArea.keys &&
-      (myGameArea.keys["s"] || myGameArea.keys["ArrowDown"])
-    ) {
+    if (myGameArea.keys && myGameArea.keys["s"]) {
       mainCharacter.speedY = 2 + acceleration;
     }
 
@@ -278,6 +275,7 @@ function updateGameArea() {
       if (!shot_hold) {
         mainCharacter.shoot();
         shot_hold = true;
+        console.log("shot");
       }
     } else {
       shot_hold = false;
