@@ -150,39 +150,51 @@ function updateGameArea() {
       }
     }
 
-    //detect when bullets crash with each other
-    for (let z = 0; z < mainChar_bullet_arr.length; z++) {
-      for (let x = 0; x < border_bullet_arr.length; x++) {
-        if (bullet_collision(mainChar_bullet_arr[z], border_bullet_arr[x])) {
-          delete mainChar_bullet_arr[z];
-          delete border_bullet_arr[x];
-        }
-      }
-    }
-
     //detect if a border bullet hits a border or mainChar
-    for (var y = 0; y < border_bullet_arr.length; y++) {
+    border_bullet_arr.forEach((bullet, bulletIndex) => {
+      //detect collision with border
       if (
-        border_bullet_arr[y].crashWith(borderBottom) ||
-        border_bullet_arr[y].crashWith(borderLeft) ||
-        border_bullet_arr[y].crashWith(borderTop) ||
-        border_bullet_arr[y].crashWith(borderRight)
+        bullet.crashWith(borderBottom) ||
+        bullet.crashWith(borderLeft) ||
+        bullet.crashWith(borderTop) ||
+        bullet.crashWith(borderRight)
       ) {
-        delete border_bullet_arr[y];
-      } else if (border_bullet_arr[y].crashWith(mainCharacter)) {
-        delete border_bullet_arr[y];
+        border_bullet_arr.splice(bulletIndex, 1);
+      }
+
+      //detect collision with mainChar
+      if (bullet.crashWith(mainCharacter)) {
+        border_bullet_arr.splice(bulletIndex, 1);
         health -= 1;
         shot = true;
         myGameArea.canvas.classList.add("shake_screen");
       }
 
-      border_bullet_arr = border_bullet_arr.filter(
-        (item) => item !== undefined
-      );
+      //newPos() and update()
+      bullet.newPos();
+      bullet.update();
+    });
 
-      border_bullet_arr[y].newPos();
-      border_bullet_arr[y].update();
-    }
+    //detect mainChar bullet hitting border or enemy bullet
+    mainChar_bullet_arr.forEach((mainChar_bullet, mainChar_bulletIndex) => {
+      //detect collision with border
+      if (
+        mainChar_bullet.crashWith(borderBottom) ||
+        mainChar_bullet.crashWith(borderLeft) ||
+        mainChar_bullet.crashWith(borderTop) ||
+        mainChar_bullet.crashWith(borderRight)
+      ) {
+        mainChar_bullet_arr.splice(mainChar_bulletIndex, 1);
+      }
+
+      //detect collision with enemy bullet
+      border_bullet_arr.forEach((bullet, bulletIndex) => {
+        if (bullet.crashWith(mainChar_bullet)) {
+          mainChar_bullet_arr.splice(mainChar_bulletIndex, 1);
+          border_bullet_arr.splice(bulletIndex, 1);
+        }
+      });
+    });
 
     //detect mainChar bullet hitting border
     for (var z = 0; z < mainChar_bullet_arr.length; z++) {

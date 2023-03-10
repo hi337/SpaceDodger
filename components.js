@@ -371,13 +371,6 @@ function makeid(length) {
   return result;
 }
 
-function bullet_collision(object1, object2) {
-  if (object1.crashWith(object2)) {
-    return true;
-  }
-  return false;
-}
-
 /**
  * @todo remove all depreciated libraries like requestAnimaitonFrame()
  * @todo make the shaking effect on nuke and not on hit
