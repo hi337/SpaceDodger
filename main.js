@@ -61,7 +61,7 @@ var myGameArea = {
     this.interval = setInterval(updateGameArea, 20);
     window.addEventListener("keydown", function (e) {
       if (allow_pause) {
-        if (e.key == "p") {
+        if (e.keyCode == 80) {
           if (!paused) {
             paused = true;
           } else {
@@ -70,23 +70,14 @@ var myGameArea = {
         }
         allow_pause = false;
       }
-      myGameArea.keys = myGameArea.keys || {
-        w: false,
-        a: false,
-        s: false,
-        d: false,
-        r: false,
-        p: false,
-        Shift: false,
-        " ": false,
-      };
-      myGameArea.keys[e.key] = true;
+      myGameArea.keys = myGameArea.keys || {};
+      myGameArea.keys[e.keyCode] = true;
     });
     window.addEventListener("keyup", function (e) {
-      if (e.key == "p") {
+      if (e.keyCode == 80) {
         allow_pause = true;
       } else {
-        myGameArea.keys[e.key] = false;
+        myGameArea.keys[e.keyCode] = false;
       }
     });
   },
@@ -96,7 +87,7 @@ var myGameArea = {
   stop: function () {
     clearInterval(this.interval);
     window.addEventListener("keydown", function (e) {
-      if (e.key == "r") {
+      if (e.keyCode == 82) {
         location.reload();
       }
     });
@@ -106,7 +97,7 @@ var myGameArea = {
 //what happens everytime the frame updates
 function updateGameArea() {
   //detecting r for reset
-  if (myGameArea.keys && myGameArea.keys["r"]) {
+  if (myGameArea.keys && myGameArea.keys[82]) {
     location.reload();
   }
   if (!paused) {
@@ -259,7 +250,7 @@ function updateGameArea() {
     Health.update();
 
     //detecting shift to accelerate
-    if (myGameArea.keys && myGameArea.keys["Shift"]) {
+    if (myGameArea.keys && myGameArea.keys[16]) {
       acceleration = 3;
     } else {
       acceleration = 0;
@@ -269,21 +260,21 @@ function updateGameArea() {
     mainCharacter.speedX = 0;
     mainCharacter.speedY = 0;
 
-    if (myGameArea.keys && myGameArea.keys["a"]) {
+    if (myGameArea.keys && myGameArea.keys[65]) {
       mainCharacter.speedX = -2 - acceleration;
     }
-    if (myGameArea.keys && myGameArea.keys["d"]) {
+    if (myGameArea.keys && myGameArea.keys[68]) {
       mainCharacter.speedX = 2 + acceleration;
     }
-    if (myGameArea.keys && myGameArea.keys["w"]) {
+    if (myGameArea.keys && myGameArea.keys[87]) {
       mainCharacter.speedY = -2 - acceleration;
     }
-    if (myGameArea.keys && myGameArea.keys["s"]) {
+    if (myGameArea.keys && myGameArea.keys[83]) {
       mainCharacter.speedY = 2 + acceleration;
     }
 
     //initiate a shot from mainChar
-    if (myGameArea.keys && myGameArea.keys[" "]) {
+    if (myGameArea.keys && myGameArea.keys[32]) {
       if (!shot_hold) {
         mainCharacter.shoot();
         shot_hold = true;
