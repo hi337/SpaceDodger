@@ -93,17 +93,7 @@ function bullet_comp(x, y, name, angle, speedX, speedY) {
   this.image.src = "./img/fireball.png";
   this.update = function () {
     ctx = myGameArea.context;
-    ctx.save();
-    ctx.translate(this.x, this.y);
-    ctx.rotate(this.angle);
-    ctx.drawImage(
-      this.image,
-      this.width / -2,
-      this.height / -2,
-      this.width,
-      this.height
-    );
-    ctx.restore();
+    ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
   };
   //changes the position of the component
   this.newPos = function () {
@@ -214,10 +204,14 @@ function text_comp(size, font, color, x, y) {
 function component(width, height, x, y) {
   this.width = width;
   this.height = height;
+  this.hitBoxWidth = 30;
+  this.hitBoxHeight = 40;
   this.speedX = 0;
   this.speedY = 0;
   this.x = x;
   this.y = y;
+  this.centerX = this.x + 15;
+  this.centerY = this.y + 11;
   this.image = north;
   this.facing = "N";
   this.update_direction_facing = function () {
@@ -225,6 +219,8 @@ function component(width, height, x, y) {
       if (this.speedY == 0) {
         this.image = east;
         this.facing = "E";
+        this.hitBoxWidth = 40;
+        this.hitBoxHeight = 30;
       } else if (this.speedY < 0) {
         this.image = northeast;
         this.facing = "NE";
@@ -236,6 +232,8 @@ function component(width, height, x, y) {
       if (this.speedY == 0) {
         this.image = west;
         this.facing = "W";
+        this.hitBoxWidth = 40;
+        this.hitBoxHeight = 30;
       } else if (this.speedY < 0) {
         this.image = northwest;
         this.facing = "NW";
@@ -247,15 +245,27 @@ function component(width, height, x, y) {
       if (this.speedY < 0) {
         this.image = north;
         this.facing = "N";
+        this.hitBoxWidth = 30;
+        this.hitBoxHeight = 40;
       } else if (this.speedY > 0) {
         this.image = south;
         this.facing = "S";
+        this.hitBoxWidth = 30;
+        this.hitBoxHeight = 40;
       }
     }
   };
   this.update = function () {
     let ctx = myGameArea.context;
     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+    // ctx.fillStyle = "red";
+    // ctx.fillRect(
+    //   this.centerX,
+    //   this.centerY,
+    //   this.hitBoxWidth,
+    //   this.hitBoxHeight
+    // );
+    // ctx.stroke();
   };
   //changes the position of the component
   this.newPos = function () {
@@ -263,6 +273,8 @@ function component(width, height, x, y) {
     this.y += this.speedY;
     mainCharx = this.x;
     mainChary = this.y;
+    this.centerX = this.x + 15;
+    this.centerY = this.y + 11;
   };
   //shooting mechanism
   this.shoot = function () {
@@ -331,20 +343,20 @@ function component(width, height, x, y) {
   };
   //collision detection
   this.crashWith = function (otherobj) {
-    var myleft = this.x;
-    var myright = this.x + this.width;
-    var mytop = this.y;
-    var mybottom = this.y + this.height;
-    var otherleft = otherobj.x;
-    var otherright = otherobj.x + otherobj.width;
-    var othertop = otherobj.y;
-    var otherbottom = otherobj.y + otherobj.height;
-    var crash = true;
+    let myleft = this.centerX;
+    let myright = this.centerX + this.hitBoxWidth;
+    let mytop = this.centerY;
+    let mybottom = this.centerY + this.hitBoxHeight;
+    let otherleft = otherobj.x;
+    let otherright = otherobj.x + otherobj.width;
+    let othertop = otherobj.y;
+    let otherbottom = otherobj.y + otherobj.height;
+    let crash = true;
     if (
-      mybottom < othertop ||
-      mytop > otherbottom ||
-      myright < otherleft ||
-      myleft > otherright
+      mybottom <= othertop ||
+      mytop >= otherbottom ||
+      myright <= otherleft ||
+      myleft >= otherright
     ) {
       crash = false;
     }
