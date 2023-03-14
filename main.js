@@ -154,7 +154,7 @@ function updateGameArea() {
       }
 
       //detect collision with mainChar
-      if (bullet.crashWith(mainCharacter)) {
+      if (mainCharacter.crashWith(bullet)) {
         border_bullet_arr.splice(bulletIndex, 1);
         health -= 1;
         shot = true;
