@@ -16,6 +16,7 @@ let chosen_border = ""; //variable denoting the next border to shoot from
 let mainCharx = 315; //mainCharx, global for bullet positioning
 let mainChary = 200; //mainChary, global for bullet positioning
 let border_arr = ["top", "bottom", "left", "right"]; //array of border components
+let particles = []; //array for the firework effect after bullet-bullet collision
 
 //function causes one of the borders to shoot a bullet from a random spot on the side facing inwards and at a random degree. They start of slowly shooting, but the interval shrinks to a certain number, until it shoots 4-5 per minuite.
 function choose_shooting_border() {
@@ -25,6 +26,8 @@ function choose_shooting_border() {
   chosen_border = border_arr[Math.floor(Math.random() * border_arr.length)];
 }
 
+//function for the firework particles
+
 //mainChar bullet component
 function mainChar_bullet_comp(x, y, name, angle, speedX, speedY) {
   this.speedX = speedX;
@@ -33,10 +36,10 @@ function mainChar_bullet_comp(x, y, name, angle, speedX, speedY) {
   this.name = name;
   this.x = x;
   this.y = y;
-  this.width = 10;
-  this.height = 10;
+  this.width = 12;
+  this.height = 24;
   this.image = new Image();
-  this.image.src = "./img/fireball.png";
+  this.image.src = "./img/mainCharBullet.png";
   this.update = function () {
     ctx = myGameArea.context;
     ctx.save();
@@ -258,14 +261,6 @@ function component(width, height, x, y) {
   this.update = function () {
     let ctx = myGameArea.context;
     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
-    // ctx.fillStyle = "red";
-    // ctx.fillRect(
-    //   this.centerX,
-    //   this.centerY,
-    //   this.hitBoxWidth,
-    //   this.hitBoxHeight
-    // );
-    // ctx.stroke();
   };
   //changes the position of the component
   this.newPos = function () {

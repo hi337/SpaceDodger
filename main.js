@@ -183,6 +183,7 @@ function updateGameArea() {
         if (bullet.crashWith(mainChar_bullet)) {
           mainChar_bullet_arr.splice(mainChar_bulletIndex, 1);
           border_bullet_arr.splice(bulletIndex, 1);
+          score += 1;
         }
       });
     });
