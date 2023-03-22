@@ -8,6 +8,7 @@ let allow_pause = true;
 let shake_frame_count = 0;
 let shot = false;
 let shot_hold = false;
+let shot_sound = new Audio("audio/shot.mp3"); //loading audio file for shot sound
 
 //preloading images
 let east = new Image();

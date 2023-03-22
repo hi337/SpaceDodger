@@ -335,6 +335,7 @@ function component(width, height, x, y) {
         new mainChar_bullet_comp(this.x, this.y, nom, 5.49779, -5.5, -5.5)
       );
     }
+    shot_sound.play();
   };
   //collision detection
   this.crashWith = function (otherobj) {
