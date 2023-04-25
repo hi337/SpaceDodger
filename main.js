@@ -8,7 +8,6 @@ let allow_pause = true;
 let shake_frame_count = 0;
 let shot = false;
 let shot_hold = false;
-let shot_sound = new Audio("audio/shot.mp3"); //loading audio file for shot sound
 
 //preloading images
 let east = new Image();
@@ -159,7 +158,6 @@ function updateGameArea() {
         border_bullet_arr.splice(bulletIndex, 1);
         health -= 1;
         shot = true;
-        myGameArea.canvas.classList.add("shake_screen");
       }
 
       //newPos() and update()
@@ -184,7 +182,6 @@ function updateGameArea() {
         if (bullet.crashWith(mainChar_bullet)) {
           mainChar_bullet_arr.splice(mainChar_bulletIndex, 1);
           border_bullet_arr.splice(bulletIndex, 1);
-          score += 1;
         }
       });
     });
@@ -210,12 +207,12 @@ function updateGameArea() {
 
     //processing how long to shake the screen
     if (shot) {
-      shake_frame_count += 1;
-      if (shake_frame_count > 30) {
+      myGameArea.canvas.classList.add("shake_screen");
+      navigator.vibrate(1000);
+      setTimeout(() => {
         myGameArea.canvas.classList.remove("shake_screen");
-        shot = false;
-        shake_frame_count = 0;
-      }
+      }, 1000);
+      shot = false;
     }
 
     // processing the one point per second rule
@@ -238,12 +235,6 @@ function updateGameArea() {
     //update health
     if (health <= 0) {
       window.localStorage.setItem("top_score", top_score);
-      if (shot) {
-        myGameArea.canvas.classList.add("shake_screen");
-        setTimeout(() => {
-          myGameArea.canvas.classList.remove("shake_screen");
-        }, 1000);
-      }
       gameOverText.text = "GAME OVER";
       gameOverText.update();
       myGameArea.stop();
@@ -280,7 +271,6 @@ function updateGameArea() {
       if (!shot_hold) {
         mainCharacter.shoot();
         shot_hold = true;
-        console.log("shot");
       }
     } else {
       shot_hold = false;
