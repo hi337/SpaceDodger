@@ -19,6 +19,7 @@ let border_arr = ["top", "bottom", "left", "right"]; //array of border component
 let particles = []; //array for the firework effect after bullet-bullet collision
 let full = false;
 let allow_full = true;
+let tapedTwice = false;
 
 //function causes one of the borders to shoot a bullet from a random spot on the side facing inwards and at a random degree. They start of slowly shooting, but the interval shrinks to a certain number, until it shoots 4-5 per minuite.
 function choose_shooting_border() {
@@ -381,13 +382,23 @@ function makeid(length) {
   return result;
 }
 
-/**
- * @todo remove all depreciated libraries like requestAnimaitonFrame()
- * @todo make the shaking effect on nuke and not on hit
- * @todo ask gpt how to improve code
- * @todo make maincharacter rotate based on the direction he is facing.
- * @todo change maincharacter's width and height and replace with an image of a spaceship.
- * @todo add textures to the bullet, the background, and the borders.
- * @todo add start screen
- * @todo fix the shooting mechanism, detect hits with the border_bullets, get new texture.
- */
+function tapHandler(event) {
+  if (!tapedTwice) {
+    tapedTwice = true;
+    setTimeout(function () {
+      tapedTwice = false;
+    }, 300);
+    return false;
+  }
+  event.preventDefault();
+  //action on double tap goes below
+  if (!full) {
+    myGameArea.canvas.requestFullscreen().catch((e) => {
+      console.log("Error: " + e);
+    });
+    full = true;
+  } else {
+    document.exitFullscreen();
+    full = false;
+  }
+}
