@@ -17,6 +17,8 @@ let mainCharx = 315; //mainCharx, global for bullet positioning
 let mainChary = 200; //mainChary, global for bullet positioning
 let border_arr = ["top", "bottom", "left", "right"]; //array of border components
 let particles = []; //array for the firework effect after bullet-bullet collision
+let full = false;
+let allow_full = true;
 
 //function causes one of the borders to shoot a bullet from a random spot on the side facing inwards and at a random degree. They start of slowly shooting, but the interval shrinks to a certain number, until it shoots 4-5 per minuite.
 function choose_shooting_border() {

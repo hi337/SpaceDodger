@@ -70,12 +70,28 @@ var myGameArea = {
         }
         allow_pause = false;
       }
+      if (allow_full) {
+        if (e.keyCode == 70) {
+          if (!full) {
+            myGameArea.canvas.requestFullscreen().catch((e) => {
+              console.log("Error: " + e);
+            });
+            full = true;
+          } else {
+            document.exitFullscreen();
+            full = false;
+          }
+        }
+        allow_full = false;
+      }
       myGameArea.keys = myGameArea.keys || {};
       myGameArea.keys[e.keyCode] = true;
     });
     window.addEventListener("keyup", function (e) {
       if (e.keyCode == 80) {
         allow_pause = true;
+      } else if (e.keyCode == 70) {
+        allow_full = true;
       } else {
         myGameArea.keys[e.keyCode] = false;
       }
