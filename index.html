@@ -28,5 +28,19 @@
       content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height"
     />
   </head>
-  <body onload="startGame()"></body>
+  <body onload="startGame()">
+    <div
+      style="
+        border: 2px black solid;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      "
+      id="play_screen"
+      class="play_screen"
+    >
+      <button onclick="endPause()">Play</button>
+    </div>
+  </body>
 </html>
