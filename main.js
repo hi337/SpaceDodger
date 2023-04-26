@@ -59,7 +59,6 @@ var myGameArea = {
     this.context = this.canvas.getContext("2d");
     document.body.insertBefore(this.canvas, document.body.childNodes[10]);
     this.interval = setInterval(updateGameArea, 20);
-    this.canvas.addEventListener("touchstart", tapHandler); //detects a double tap on screen for full
     window.addEventListener("keydown", function (e) {
       if (allow_pause) {
         if (e.keyCode == 80) {
